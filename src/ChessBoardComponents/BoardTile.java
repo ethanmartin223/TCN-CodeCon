@@ -5,7 +5,26 @@ import java.awt.*;
 
 public class BoardTile extends JButton {
 
-    Image renderingPiece;
+    public static class FixedStateButtonModel extends DefaultButtonModel    {
+
+        @Override
+        public boolean isPressed() {
+            return false;
+        }
+
+        @Override
+        public boolean isRollover() {
+            return false;
+        }
+
+        @Override
+        public void setRollover(boolean b) {
+            //NOOP
+        }
+
+    }
+
+    ImageIcon renderingPiece;
     int x, y;
     JPanel parent;
     Color currentColor;
@@ -22,8 +41,7 @@ public class BoardTile extends JButton {
         addActionListener(e-> {
             parent.setSelectedTile(this);
         });
-
-        //debug
+        setModel(new FixedStateButtonModel());
     }
 
     public void setColor(Color c) {
@@ -33,7 +51,7 @@ public class BoardTile extends JButton {
 
     public void renderPieceAtSquare() {
         if (renderingPiece != null) { //fix static sizing later
-            setIcon(new ImageIcon(renderingPiece.getScaledInstance(75,75,  java.awt.Image.SCALE_SMOOTH)));
+            setIcon(renderingPiece);
         } else {
             setIcon(null);
         }

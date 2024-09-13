@@ -10,8 +10,8 @@ public class ChessBoardUI extends JPanel{
 
     static Color BOARD_WHITE_COLOR = Color.DARK_GRAY;
     static Color BOARD_BLACK_COLOR = Color.GRAY;
-    static Color BOARD_SELECTED_COLOR = Color.YELLOW;
-    static Color BOARD_SELECTED_CAN_MOVE_TO_COLOR = Color.BLUE;
+    static Color BOARD_SELECTED_COLOR = new Color(255, 239, 137);
+    static Color BOARD_SELECTED_CAN_MOVE_TO_COLOR = new Color(255, 224, 153);
 
 
     private JFrame parentWindow;
@@ -67,8 +67,15 @@ public class ChessBoardUI extends JPanel{
             redrawBoard();
             return;
         }
-        selectedTile = sT;
         redrawBoard();
+        ChessPiece cp;
+        if ((cp=chessBoardData.getPieceAt(sT.x, sT.y))!=null) {
+            for (int[] move : cp.getAvailableMoves()){
+                getBoardTileAt(move[0], move[1]).setColor(BOARD_SELECTED_CAN_MOVE_TO_COLOR);
+            }
+        }
+        selectedTile = sT;
+        revalidate();
 
     }
 

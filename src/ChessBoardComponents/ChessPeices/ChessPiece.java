@@ -1,7 +1,10 @@
 package ChessBoardComponents.ChessPeices;
 
 import ChessBoardComponents.ChessBoardData;
+
+import javax.swing.*;
 import java.awt.*;
+import java.util.AbstractList;
 import java.util.ArrayList;
 
 public class ChessPiece {
@@ -10,7 +13,7 @@ public class ChessPiece {
 
     ChessBoardData board;
     int x, y;
-    Image renderImage;
+    ImageIcon renderImage;
     Integer color;
 
     public static final int BLACK = 0;
@@ -47,7 +50,7 @@ public class ChessPiece {
         return y;
     }
 
-    public Image getRenderImage() {
+    public ImageIcon getRenderImage() {
         return this.renderImage;
     }
 
@@ -58,4 +61,46 @@ public class ChessPiece {
     public void setX(int x) {
         this.x = x;
     }
+
+    //bishop, queen, and rook
+    protected ArrayList<int[]> getMovesForLongDistanceMovements(int[][] directions) {
+        ArrayList<int[]> outputList = new ArrayList<>();
+        for (int[] position: directions) {
+            int distanceModifier = 1;
+            int dx = x + position[0];
+            int dy = y + position[1];
+            while (dy< board.getHeight() && dy>-1 && dx< board.getWidth() && dx>-1) {
+                ChessPiece cp = board.getPieceAt(dx, dy);
+                if (cp == null) {
+                    outputList.add(new int[]{dx, dy});
+                } else {
+                    if (cp.getColor() != this.color)
+                        outputList.add(new int[]{dx, dy});
+                    break;
+                }
+                distanceModifier += 1;
+                dy = y + position[1]*distanceModifier;
+                dx = x + position[0]*distanceModifier;
+            }
+        }
+        return outputList;
+    }
+
+    //king and knight
+    protected ArrayList<int[]> getMovesForDefinedMovements(int[][] directions) {
+        ArrayList<int[]> outputList = new ArrayList<>();
+        for (int[] position: directions) {
+            int dx = x + position[0];
+            int dy = y + position[1];
+            if (dx<board.getWidth() && dx>-1 && dy<board.getHeight() && dy>-1) {
+                ChessPiece cp = board.getPieceAt(dx, dy);
+                if (cp == null || (cp.getColor() != this.color)) {
+                    outputList.add(new int[]{dx ,dy});
+                }
+            }
+        }
+        return outputList;
+    }
+
+
 }
