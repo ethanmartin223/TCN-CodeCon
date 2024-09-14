@@ -5,13 +5,16 @@ import ChessBoardComponents.ChessPeices.ChessPiece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class ChessBoardUI extends JPanel{
+public class ChessBoardUI extends JPanel implements KeyListener {
 
     static Color BOARD_WHITE_COLOR = Color.DARK_GRAY;
     static Color BOARD_BLACK_COLOR = Color.GRAY;
     static Color BOARD_SELECTED_COLOR = new Color(255, 239, 137);
-    static Color BOARD_SELECTED_CAN_MOVE_TO_COLOR = new Color(255, 224, 153);
+    static Color BOARD_SELECTED_CAN_MOVE_TO_WHITE_COLOR = new Color(255, 224, 153);
+    static Color BOARD_SELECTED_CAN_MOVE_TO_BLACK_COLOR = new Color(161, 141, 98);
 
 
     private JFrame parentWindow;
@@ -19,6 +22,8 @@ public class ChessBoardUI extends JPanel{
     private ChessBoardData chessBoardData;
     private BoardTile[][] boardTiles;
     private BoardTile selectedTile;
+
+    private boolean renderZeroZeroDown;
 
     public ChessBoardUI(JFrame parent, int width, int height) {
         setLayout(new GridLayout(height, width));
@@ -34,6 +39,8 @@ public class ChessBoardUI extends JPanel{
             }
         }
         selectedTile = null;
+        renderZeroZeroDown = true;
+        grabFocus();
     }
 
     public void startNewGame() {
@@ -41,6 +48,8 @@ public class ChessBoardUI extends JPanel{
     }
 
     public void redrawBoard() {
+        long start = System.currentTimeMillis();
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 ChessPiece cp = chessBoardData.getPieceAt(x,y);
@@ -55,8 +64,8 @@ public class ChessBoardUI extends JPanel{
                 }
             }
         }
+        System.out.println("redrawBoard():"+(System.currentTimeMillis()-start)+"ms");
     }
-
 
     public void setSelectedTile(BoardTile sT) {
         if (selectedTile != null && selectedTile != sT) {
@@ -71,15 +80,43 @@ public class ChessBoardUI extends JPanel{
         ChessPiece cp;
         if ((cp=chessBoardData.getPieceAt(sT.x, sT.y))!=null) {
             for (int[] move : cp.getAvailableMoves()){
-                getBoardTileAt(move[0], move[1]).setColor(BOARD_SELECTED_CAN_MOVE_TO_COLOR);
+                BoardTile bt = getBoardTileAt(move[0], move[1]);
+                bt.setColor(bt.baseColor==BOARD_WHITE_COLOR?BOARD_SELECTED_CAN_MOVE_TO_BLACK_COLOR:
+                        BOARD_SELECTED_CAN_MOVE_TO_WHITE_COLOR);
             }
         }
         selectedTile = sT;
-        revalidate();
-
     }
 
     private BoardTile getBoardTileAt(int x, int y) {
         return boardTiles[y][x];
     }
+
+    private void flipBoard() {
+        removeAll();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (renderZeroZeroDown) {
+                    add(boardTiles[y][x]);
+                } else add(boardTiles[(boardTiles.length-1)-y][x]);
+            }
+        }
+        repaint();
+        revalidate();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyChar() == 'f') {
+            renderZeroZeroDown=!renderZeroZeroDown;
+            System.out.println("Rendering Flipped");
+            flipBoard();
+            redrawBoard();
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e){}
+    @Override
+    public void keyReleased(KeyEvent e){}
 }

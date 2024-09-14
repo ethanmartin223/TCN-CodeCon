@@ -10,6 +10,8 @@ public class MainWindow extends JFrame {
         setTitle("TCN Project");
 
         ChessBoardUI chessBoard = new ChessBoardUI(this, 8,8);
+        chessBoard.addKeyListener(chessBoard);
+        chessBoard.setFocusable(true);
         add(chessBoard);
 
         chessBoard.startNewGame();

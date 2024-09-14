@@ -41,19 +41,22 @@ public class BoardTile extends JButton {
         addActionListener(e-> {
             parent.setSelectedTile(this);
         });
+        setFocusable(false);
         setModel(new FixedStateButtonModel());
     }
 
     public void setColor(Color c) {
-        this.setBackground(c);
-        this.currentColor = c;
+        if (c != getBackground()) {
+            this.setBackground(c);
+            this.currentColor = c;
+        }
     }
 
     public void renderPieceAtSquare() {
         if (renderingPiece != null) { //fix static sizing later
-            setIcon(renderingPiece);
+            if (getIcon()!=renderingPiece)setIcon(renderingPiece);
         } else {
-            setIcon(null);
+            if (getIcon()!=null)setIcon(null);
         }
     }
 

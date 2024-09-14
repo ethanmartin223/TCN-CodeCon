@@ -2,16 +2,20 @@ package ChessBoardComponents;
 
 import ChessBoardComponents.ChessPeices.*;
 
+import java.util.ArrayList;
+
 public class ChessBoardData {
 
     ChessPiece[][] boardData;
     int width, height;
+    ArrayList<ChessPiece> allPieces;
 
 
     public ChessBoardData(int width, int height) {
         this.width = width;
         this.height = height;
         boardData = new ChessPiece[height][width];
+        allPieces = new ArrayList<ChessPiece>();
     }
 
     public ChessPiece getPieceAt(int x, int y) {

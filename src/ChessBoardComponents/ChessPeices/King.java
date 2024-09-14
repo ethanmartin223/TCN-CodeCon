@@ -19,8 +19,8 @@ public class King extends ChessPiece{
 
     @Override
     public ArrayList<int[]> getAvailableMoves() {
-        return getMovesForDefinedMovements(directions);
-        //insert stuff here checking each position for check
+        ArrayList<int[]> possibleMoves = getMovesForDefinedMovements(directions);
+        return possibleMoves;
     }
 
 }
