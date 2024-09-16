@@ -3,8 +3,6 @@ package ChessBoardComponents.ChessPeices;
 import ChessBoardComponents.ChessBoardData;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.AbstractList;
 import java.util.ArrayList;
 
 public class ChessPiece {
@@ -25,6 +23,7 @@ public class ChessPiece {
         y = poxY;
         this.color = color;
         renderImage = null;
+        parentBoard.addPiece(this);
     }
 
     public ArrayList<int[]> getAvailableMoves() {

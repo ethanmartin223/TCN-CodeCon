@@ -22,7 +22,7 @@ public class ChessBoardUI extends JPanel implements KeyListener {
     private ChessBoardData chessBoardData;
     private BoardTile[][] boardTiles;
     private BoardTile selectedTile;
-
+    private Timer aiMoveTimer;
     private boolean renderZeroZeroDown;
 
     public ChessBoardUI(JFrame parent, int width, int height) {
@@ -41,10 +41,15 @@ public class ChessBoardUI extends JPanel implements KeyListener {
         selectedTile = null;
         renderZeroZeroDown = true;
         grabFocus();
+
+        aiMoveTimer = new Timer(500, e -> doAiMoves());
+        aiMoveTimer.setRepeats(true);
+        aiMoveTimer.start();
     }
 
     public void startNewGame() {
         chessBoardData.initializeNewGame();
+        redrawBoard();
     }
 
     public void redrawBoard() {
@@ -55,21 +60,20 @@ public class ChessBoardUI extends JPanel implements KeyListener {
                 ChessPiece cp = chessBoardData.getPieceAt(x,y);
                 if (cp != null) {
                     boardTiles[y][x].renderingPiece = cp.getRenderImage();
-                }
-                boardTiles[y][x].renderPieceAtSquare();
-                if (boardTiles[y][x] == selectedTile) {
-                    boardTiles[y][x].setColor(BOARD_SELECTED_COLOR);
                 } else {
-                    boardTiles[y][x].setColor(boardTiles[y][x].baseColor);
+                    boardTiles[y][x].renderingPiece = null;
                 }
+                boardTiles[y][x].setColor(boardTiles[y][x].baseColor);
+                boardTiles[y][x].renderPieceAtSquare();
             }
         }
-        System.out.println("redrawBoard():"+(System.currentTimeMillis()-start)+"ms");
     }
 
     public void setSelectedTile(BoardTile sT) {
-        if (selectedTile != null && selectedTile != sT) {
-            if (chessBoardData.tryToMove(chessBoardData.getPieceAt(selectedTile.x, selectedTile.y), sT.x, sT.y)){
+        ChessPiece sTPiece, selectedTilePiece;
+        if (selectedTile != null && !((selectedTilePiece=chessBoardData.getPieceAt(selectedTile.x, selectedTile.y))!=null &&
+                (sTPiece=chessBoardData.getPieceAt(sT.x, sT.y))!=null && selectedTilePiece.getColor() == sTPiece.getColor())) {
+            if (selectedTile != sT && chessBoardData.tryToMove(chessBoardData.getPieceAt(selectedTile.x, selectedTile.y), sT.x, sT.y)){
                 getBoardTileAt(selectedTile.x, selectedTile.y).renderingPiece = null;
             }
             selectedTile = null;
@@ -79,6 +83,7 @@ public class ChessBoardUI extends JPanel implements KeyListener {
         redrawBoard();
         ChessPiece cp;
         if ((cp=chessBoardData.getPieceAt(sT.x, sT.y))!=null) {
+            boardTiles[sT.y][sT.x].setColor(BOARD_SELECTED_COLOR);
             for (int[] move : cp.getAvailableMoves()){
                 BoardTile bt = getBoardTileAt(move[0], move[1]);
                 bt.setColor(bt.baseColor==BOARD_WHITE_COLOR?BOARD_SELECTED_CAN_MOVE_TO_BLACK_COLOR:
@@ -119,4 +124,18 @@ public class ChessBoardUI extends JPanel implements KeyListener {
     public void keyTyped(KeyEvent e){}
     @Override
     public void keyReleased(KeyEvent e){}
+
+    public ChessBoardData getBoardData() {
+        return chessBoardData;
+    }
+
+    public void doAiMoves() {
+        if (chessBoardData.whiteBot != null && chessBoardData.currentPlayerTurn == ChessPiece.WHITE) {
+            chessBoardData.whiteBot.makeBestMove();
+            redrawBoard();
+        } else if (chessBoardData.blackBot != null && chessBoardData.currentPlayerTurn == ChessPiece.BLACK) {
+            chessBoardData.blackBot.makeBestMove();
+            redrawBoard();
+        }
+    }
 }
