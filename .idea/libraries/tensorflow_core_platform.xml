@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="tensorflow.core.platform" type="repository">
+    <properties maven-id="org.tensorflow:tensorflow-core-platform:1.0.0-rc.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/tensorflow-core-platform-1.0.0-rc.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tensorflow-core-api-1.0.0-rc.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ndarray-1.0.0-rc.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tensorflow-core-native-1.0.0-rc.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tensorflow-core-native-1.0.0-rc.1-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javacpp-1.5.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/protobuf-java-3.21.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tensorflow-core-native-1.0.0-rc.1-macosx-arm64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tensorflow-core-native-1.0.0-rc.1-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tensorflow-core-native-1.0.0-rc.1-windows-x86_64.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

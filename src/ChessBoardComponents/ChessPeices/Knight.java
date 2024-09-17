@@ -20,4 +20,9 @@ public class Knight extends ChessPiece{
     public ArrayList<int[]> getAvailableMoves() {
         return getMovesForDefinedMovements(directions);
     }
+
+    @Override
+    public String toString() {
+        return (color==WHITE?"w":"b")+"N";
+    }
 }

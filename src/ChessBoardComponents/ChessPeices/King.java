@@ -23,4 +23,8 @@ public class King extends ChessPiece{
         return possibleMoves;
     }
 
+    @Override
+    public String toString() {
+        return (color==WHITE?"w":"b")+"K";
+    }
 }

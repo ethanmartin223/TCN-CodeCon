@@ -25,6 +25,7 @@ public class Pawn extends ChessPiece{
             if (board.getPieceAt(x,y + directionModifier)==null) outputList.add(new int[]{x,y + directionModifier});
         if (!hasMovedBefore && x < board.getWidth() && x > -1 && y + directionModifier*2 < board.getHeight() && y + directionModifier*2 > -1)
             if (board.getPieceAt(x,y + directionModifier*2)==null) outputList.add(new int[]{x,y + directionModifier*2});
+
         //diagonal taking
         if (x+1 < board.getWidth() && x+1 > -1 && y + directionModifier < board.getHeight() && y + directionModifier > -1)
             if (board.getPieceAt(x+1,y + directionModifier)!=null && board.getPieceAt(x+1,y + directionModifier).getColor()!=this.color)
@@ -33,5 +34,10 @@ public class Pawn extends ChessPiece{
             if (board.getPieceAt(x-1,y + directionModifier)!=null && board.getPieceAt(x-1,y + directionModifier).getColor()!=this.color)
                 outputList.add(new int[]{x-1,y + directionModifier});
         return outputList;
+    }
+
+    @Override
+    public String toString() {
+        return (color==WHITE?"w":"b")+"P";
     }
 }

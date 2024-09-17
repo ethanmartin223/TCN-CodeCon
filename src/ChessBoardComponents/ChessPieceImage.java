@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class ChessPieceImage {
-    private static final int WIDTH = 75;
-    private static final int HEIGHT = 75;
+    private static final int WIDTH = 76;
+    private static final int HEIGHT = 76;
 
     public static ImageIcon BLACK_ROOK;
     public static ImageIcon BLACK_QUEEN;
@@ -47,7 +47,7 @@ public class ChessPieceImage {
 
     private static Image getScaledImage(String path) throws IOException {
         Image image = ImageIO.read(new File(path));
-        return image.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        return image.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_AREA_AVERAGING);
     }
 
 }

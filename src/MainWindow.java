@@ -1,6 +1,4 @@
 import ChessBoardComponents.ChessBoardUI;
-import ChessBoardComponents.ChessBot;
-import ChessBoardComponents.ChessPeices.ChessPiece;
 
 import javax.swing.*;
 
@@ -16,11 +14,11 @@ public class MainWindow extends JFrame {
         chessBoard.setFocusable(true);
         add(chessBoard);
 
-//        ChessBot whiteAi = new ChessBot(chessBoard.getBoardData(), ChessPiece.WHITE);
+//        ChessAi.ChessBot whiteAi = new ChessAi.ChessBot(chessBoard.getBoardData(), ChessPiece.WHITE);
 //        chessBoard.getBoardData().setAiForColor(whiteAi, ChessPiece.WHITE);
 
-        ChessBot blackAi = new ChessBot(chessBoard.getBoardData(), ChessPiece.BLACK);
-        chessBoard.getBoardData().setAiForColor(blackAi, ChessPiece.BLACK);
+//        ChessAi.ChessBot blackAi = new ChessAi.ChessBot(chessBoard.getBoardData(), ChessPiece.BLACK);
+//        chessBoard.getBoardData().setAiForColor(blackAi, ChessPiece.BLACK);
 
         chessBoard.startNewGame();
 

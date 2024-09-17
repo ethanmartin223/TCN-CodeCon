@@ -1,5 +1,6 @@
-package ChessBoardComponents;
+package ChessAi;
 
+import ChessBoardComponents.ChessBoardData;
 import ChessBoardComponents.ChessPeices.ChessPiece;
 
 import java.util.ArrayList;

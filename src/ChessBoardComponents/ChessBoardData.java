@@ -1,10 +1,10 @@
 package ChessBoardComponents;
 
+import ChessAi.ChessBot;
 import ChessBoardComponents.ChessPeices.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 public class ChessBoardData {
 
