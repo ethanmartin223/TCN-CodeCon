@@ -3,10 +3,13 @@ package ChessAi;
 import ChessBoardComponents.ChessBoardData;
 import ChessBoardComponents.ChessPeices.ChessPiece;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BoardState {
+    static final byte EMPTY = 0b00000000;
+
     static final byte WHITE_KING =  0b00000001;
     static final byte WHITE_QUEEN = 0b00000010;
     static final byte WHITE_ROOK =  0b00000011;
@@ -20,6 +23,7 @@ public class BoardState {
     static final byte BLACK_BISHOP =0b00001111;
     static final byte BLACK_KNIGHT =0b00010000;
     static final byte BLACK_PAWN =  0b00010001;
+
 
     private static final Map<String, Byte> pieceMap = new HashMap<>();
     static {
@@ -56,4 +60,16 @@ public class BoardState {
         return output;
     }
 
+    public ArrayList<int[]> getAllLocations(String piece) {
+        byte p = getPieceBinaryValue(piece);
+        ArrayList<int[]> output = new ArrayList<>();
+        for (int y = 0; y < boardState.length; y++) {
+            for (int x = 0; x < boardState[0].length; x++) {
+                if (boardState[y][x] == p) {
+                    output.add(new int[]{x, y});
+                }
+            }
+        }
+        return output;
+    }
 }
