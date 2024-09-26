@@ -19,6 +19,7 @@ public class Queen extends ChessPiece{
         return getMovesForLongDistanceMovements(directions);
     }
 
+
     @Override
     public String toString() {
         return (color==WHITE?"w":"b")+"Q";

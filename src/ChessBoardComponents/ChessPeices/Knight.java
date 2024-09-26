@@ -21,6 +21,7 @@ public class Knight extends ChessPiece{
         return getMovesForDefinedMovements(directions);
     }
 
+
     @Override
     public String toString() {
         return (color==WHITE?"w":"b")+"N";

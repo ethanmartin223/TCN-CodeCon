@@ -78,25 +78,25 @@ public class ChessBoardData {
     public void initializeNewGame() {
         boardData = new ChessPiece[height][width];
 
-        for (int x = 0; x<width; x++) boardData[1][x] = new Pawn(this, x,1,ChessPiece.WHITE);
-        boardData[0][0] = new Rook(this, 0,0,ChessPiece.WHITE);
-        boardData[0][1] = new Knight(this, 1,0,ChessPiece.WHITE);
-        boardData[0][2] = new Bishop(this, 2,0,ChessPiece.WHITE);
-        boardData[0][3] = new Queen(this, 3,0,ChessPiece.WHITE);
-        boardData[0][4] = new King(this, 4,0,ChessPiece.WHITE);
-        boardData[0][5] = new Bishop(this, 5,0,ChessPiece.WHITE);
-        boardData[0][6] = new Knight(this, 6,0,ChessPiece.WHITE);
-        boardData[0][7] = new Rook(this, 7,0,ChessPiece.WHITE);
+        for (int x = 0; x < width; x++) boardData[6][x] = new Pawn(this, x, 6, ChessPiece.WHITE);
+        boardData[7][0] = new Rook(this, 0, 7, ChessPiece.WHITE);
+        boardData[7][1] = new Knight(this, 1, 7, ChessPiece.WHITE);
+        boardData[7][2] = new Bishop(this, 2, 7, ChessPiece.WHITE);
+        boardData[7][3] = new Queen(this, 3, 7, ChessPiece.WHITE);
+        boardData[7][4] = new King(this, 4, 7, ChessPiece.WHITE);
+        boardData[7][5] = new Bishop(this, 5, 7, ChessPiece.WHITE);
+        boardData[7][6] = new Knight(this, 6, 7, ChessPiece.WHITE);
+        boardData[7][7] = new Rook(this, 7, 7, ChessPiece.WHITE);
 
-        for (int x = 0; x<width; x++) boardData[6][x] = new Pawn(this, x,6,ChessPiece.BLACK);
-        boardData[7][0] = new Rook(this, 0,7,ChessPiece.BLACK);
-        boardData[7][1] = new Knight(this, 1,7,ChessPiece.BLACK);
-        boardData[7][2] = new Bishop(this, 2,7,ChessPiece.BLACK);
-        boardData[7][3] = new Queen(this, 3,7,ChessPiece.BLACK);
-        boardData[7][4] = new King(this, 4,7,ChessPiece.BLACK);
-        boardData[7][5] = new Bishop(this, 5,7,ChessPiece.BLACK);
-        boardData[7][6] = new Knight(this, 6,7,ChessPiece.BLACK);
-        boardData[7][7] = new Rook(this, 7,7,ChessPiece.BLACK);
+        for (int x = 0; x < width; x++) boardData[1][x] = new Pawn(this, x, 1, ChessPiece.BLACK);
+        boardData[0][0] = new Rook(this, 0, 0, ChessPiece.BLACK);
+        boardData[0][1] = new Knight(this, 1, 0, ChessPiece.BLACK);
+        boardData[0][2] = new Bishop(this, 2, 0, ChessPiece.BLACK);
+        boardData[0][3] = new Queen(this, 3, 0, ChessPiece.BLACK);
+        boardData[0][4] = new King(this, 4, 0, ChessPiece.BLACK);
+        boardData[0][5] = new Bishop(this, 5, 0, ChessPiece.BLACK);
+        boardData[0][6] = new Knight(this, 6, 0, ChessPiece.BLACK);
+        boardData[0][7] = new Rook(this, 7, 0, ChessPiece.BLACK);
 
     }
 
@@ -136,5 +136,15 @@ public class ChessBoardData {
         } else if (color == ChessPiece.BLACK) {
             blackBot = ai;
         }
+    }
+
+    public void debugShowBoard() {
+        for (int y = 0; y < boardData.length; y++) {
+            for (int x = 0; x < boardData[0].length; x++) {
+                System.out.print(boardData[y][x]!=null?boardData[y][x]+" ":"   ");
+            }
+            System.out.println();
+        }
+
     }
 }

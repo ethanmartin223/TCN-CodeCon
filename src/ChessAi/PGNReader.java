@@ -1,11 +1,13 @@
 package ChessAi;
 
 import ChessBoardComponents.ChessBoardData;
+import ChessBoardComponents.ChessPeices.ChessPiece;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,11 +98,11 @@ public class PGNReader {
         for (int i=0; i<moves.size(); i+=1) {
             BoardState currentBoardState = (output.game[i]= new BoardState());
             currentBoardState.boardState = deepCopy(output.game[i].boardState);
-            System.out.println(moves.get(i));
             matcher = moveDecompiler.matcher(moves.get(i));
             matcher.find();
 
             piece = tryToMatch(matcher, "p");
+            if (piece == null) piece = "P";
             x = tryToMatch(matcher, "x");
             y = tryToMatch(matcher, "y");
             extraIdentifier = tryToMatch(matcher, "i");
@@ -110,7 +112,7 @@ public class PGNReader {
             promotion = tryToMatch(matcher, "u");
             castle = tryToMatch(matcher, "c");
 
-            System.out.println("Piece: " + piece + " x: " + x + " y: " + y +
+            System.out.println("\nPiece: " + piece + " x: " + x + " y: " + y +
                     " TakenModifier: " + takenModifier +
                     " Extra Identifier: "+extraIdentifier +
                     " Check: " + check +
@@ -118,13 +120,38 @@ public class PGNReader {
                     " Promotion: " + promotion +
                     " Castle: " + castle);
 
+            HashMap<ChessPiece, ArrayList<int[]>> possiblePieces;
+            if (i%2==0) possiblePieces = sim.getAllMovesForColor(ChessPiece.WHITE);
+            else possiblePieces = sim.getAllMovesForColor(ChessPiece.BLACK);
+            ChessPiece answer = null;
+            for (ChessPiece cp : possiblePieces.keySet()) {
+                if (cp.toString().charAt(1)==(piece.charAt(0))){
+                    for (int[] move: cp.getAvailableMoves()) {
+                        if (move[1] == Integer.parseInt(y) && move[0]==fileToCoord(x.charAt(0))) {
+                            if (extraIdentifier != null) {
+                                if ((extraIdentifier.matches("[a-z]") && cp.getX()==fileToCoord(extraIdentifier.charAt(0)))
+                                        || (extraIdentifier.matches("[0-8]") && cp.getY()==Integer.parseInt(extraIdentifier)))
+                                    answer = cp;
+                            } else answer = cp;
+                            break;
+                        }
+                    }
+                }
+                if (answer != null) break;
+            }
+            System.out.println("Found chess Piece: "+answer);
+            System.out.println("Move: "+moves.get(i));
+            System.out.println("Succeeded Moving Piece: "+sim.tryToMove(answer, fileToCoord(x.charAt(0)), Integer.parseInt(y)));
 
-
-
+            sim.debugShowBoard();
         }
         return output;
     }
 
+
+    public static int fileToCoord(char l) {
+        return (l - 'a');
+    }
 
     private String tryToMatch(Matcher matcher, String group) {
         try {

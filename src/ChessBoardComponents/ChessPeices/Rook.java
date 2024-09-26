@@ -15,7 +15,6 @@ public class Rook extends ChessPiece {
         if (this.color == ChessPiece.BLACK) renderImage = ChessPieceImage.BLACK_ROOK;
         else if (this.color == ChessPiece.WHITE) renderImage = ChessPieceImage.WHITE_ROOK;
     }
-
     @Override
     public ArrayList<int[]> getAvailableMoves() {
         return getMovesForLongDistanceMovements(directions);

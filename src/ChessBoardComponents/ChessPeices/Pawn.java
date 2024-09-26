@@ -20,7 +20,7 @@ public class Pawn extends ChessPiece{
     @Override
     public ArrayList<int[]> getAvailableMoves() {
         ArrayList<int[]> outputList = new ArrayList<>();
-        int directionModifier = this.color == ChessPiece.WHITE ? 1 : -1; //this could cause issues if there is ever a color other then black/white
+        int directionModifier = this.color == ChessPiece.WHITE ? -1 : 1; //this could cause issues if there is ever a color other then black/white
         if (x < board.getWidth() && x > -1 && y + directionModifier < board.getHeight() && y + directionModifier > -1)
             if (board.getPieceAt(x,y + directionModifier)==null) outputList.add(new int[]{x,y + directionModifier});
         if (!hasMovedBefore && x < board.getWidth() && x > -1 && y + directionModifier*2 < board.getHeight() && y + directionModifier*2 > -1)
