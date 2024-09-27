@@ -27,7 +27,7 @@ public class ChessBoardData {
     }
 
     public boolean tryToMove(ChessPiece cp, int toX, int toY) {
-        if (cp!=null && cp.canMoveTo(toX,toY)) {//&& !(violatesCheckRules(cp, toX, toY))) {
+        if (cp!=null && cp.canMoveTo(toX,toY)) {
             internalMovePiece(cp, toX, toY);
             this.currentPlayerTurn = currentPlayerTurn==ChessPiece.WHITE?ChessPiece.BLACK:ChessPiece.WHITE;
             return true;
@@ -52,6 +52,13 @@ public class ChessBoardData {
         cp.setX(toX);
         cp.setY(toY);
         cp.hasMovedBefore = true;
+        if (cp.getClass()==Pawn.class && cp.getY()==0 || cp.getY()==7) {
+            try {
+                ((Pawn) cp).promote('Q'); //debug always promote to queen
+            } catch (ClassCastException e) {
+                System.out.println("CLASS CAST EXCEPTION AGAIN");
+            }
+        }
     }
 
     public void internalMovePiece(int fromX, int fromY, int toX, int toY) {

@@ -12,6 +12,21 @@ public class Pawn extends ChessPiece{
         return getAvailableMoves(false);
     }
 
+    public void promote(char c) {
+        ChessPiece promoted = null;
+        board.removePiece(this);
+        promoted = switch (c) {
+            case ('Q') -> new Queen(board, this.x, this.y, color);
+            case ('B') -> new Bishop(board, this.x, this.y, color);
+            case ('R') -> new Rook(board, this.x, this.y, color);
+            case ('N') -> new Knight(board, this.x, this.y, color);
+            default -> promoted;
+        };
+        assert promoted != null;
+        board.getData()[this.y][this.x] = promoted;
+
+    }
+
     public Pawn(ChessBoardData parentBoard, int posX, int poxY, int color) {
         super(parentBoard, posX, poxY, color);
         if (this.color == ChessPiece.BLACK) renderImage = ChessPieceImage.BLACK_PAWN;
