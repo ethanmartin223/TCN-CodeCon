@@ -12,7 +12,6 @@ public class ChessBoardData {
     int width, height;
     int currentPlayerTurn; //Form in ChessPiece.WHITE || ChessPiece.BLACK
     ArrayList<ChessPiece> allPieces;
-
     ChessBot whiteBot, blackBot;
 
     public ChessBoardData(int width, int height) {
@@ -25,21 +24,6 @@ public class ChessBoardData {
 
     public ChessPiece getPieceAt(int x, int y) {
         return boardData[y][x];
-    }
-
-
-    public boolean violatesCheckRules(ChessPiece cp, int toX, int toY) {
-        //this should probably be changed later to allow for color != white/black
-        ChessPiece king = cp.getColor()==ChessPiece.WHITE?getKing(ChessPiece.WHITE):getKing(ChessPiece.BLACK);
-        for (ChessPiece p : allPieces) {
-            if (p.getColor() != cp.getColor()) {
-                for (int[] f : p.getAvailableMoves()) {
-                    assert king != null;
-                    if (f[0] == king.getX() && f[1] == king.getY()) return true;
-                }
-            }
-        }
-        return false;
     }
 
     public boolean tryToMove(ChessPiece cp, int toX, int toY) {
@@ -61,7 +45,6 @@ public class ChessBoardData {
         return output;
     }
 
-    //keep private on this
     private void internalMovePiece(ChessPiece cp, int toX, int toY) {
         boardData[cp.getY()][cp.getX()] = null;
         if (boardData[toY][toX]!=null) removePiece(boardData[toY][toX]);
@@ -71,7 +54,7 @@ public class ChessBoardData {
         cp.hasMovedBefore = true;
     }
 
-    private void internalMovePiece(int fromX, int fromY, int toX, int toY) {
+    public void internalMovePiece(int fromX, int fromY, int toX, int toY) {
         internalMovePiece(getPieceAt(fromX, fromY), toX, toY);
     }
 
@@ -100,7 +83,7 @@ public class ChessBoardData {
 
     }
 
-    private ChessPiece getKing(int color) {
+    public ChessPiece getKing(int color) {
         for (ChessPiece cp : getAllPieces()) {
             if (cp.getClass()== King.class && cp.getColor()==color) {
                 return cp;
@@ -146,5 +129,9 @@ public class ChessBoardData {
             System.out.println();
         }
 
+    }
+
+    public ChessPiece[][] getData() {
+        return boardData;
     }
 }

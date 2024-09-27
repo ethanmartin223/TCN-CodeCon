@@ -1,5 +1,4 @@
 package ChessBoardComponents.ChessPeices;
-
 import ChessBoardComponents.ChessBoardData;
 
 import javax.swing.*;
@@ -26,12 +25,12 @@ public class ChessPiece {
         parentBoard.addPiece(this);
     }
 
-    public ArrayList<int[]> getAvailableMoves() {
+    public ArrayList<int[]> getAvailableMoves(boolean b) {
         return null;
     }
 
     public boolean canMoveTo(int x, int y) {
-        for (int[] move : getAvailableMoves()) {
+        for (int[] move : getAvailableMoves(false)) {
             if (move[0] == x && move[1] == y) return true;
         }
         return false;
@@ -57,12 +56,16 @@ public class ChessPiece {
         this.y = y;
     }
 
+    public ArrayList<int[]> getAvailableMoves() {
+        return getAvailableMoves(false);
+    }
+
     public void setX(int x) {
         this.x = x;
     }
 
     //bishop, queen, and rook
-    protected ArrayList<int[]> getMovesForLongDistanceMovements(int[][] directions) {
+    protected ArrayList<int[]> getMovesForLongDistanceMovements(int[][] directions, boolean isInternalCall) {
         ArrayList<int[]> outputList = new ArrayList<>();
         for (int[] position: directions) {
             int distanceModifier = 1;
@@ -82,11 +85,43 @@ public class ChessPiece {
                 dx = x + position[0]*distanceModifier;
             }
         }
+        if (isInternalCall) return outputList;
+        return removeMovesFromCheck(outputList);
+    }
+
+    protected ArrayList<int[]> removeMovesFromCheck(ArrayList<int[]> outputList) {
+        ChessPiece king = board.getKing(this.color);
+        ArrayList<int[]> invalidMoves = new ArrayList<>();
+        for (int[] attemptedMove : outputList) {
+
+            ChessPiece taken = board.getPieceAt(attemptedMove[0], attemptedMove[1]);
+            int sx=x, sy=y;
+            board.getData()[y][x] = null;
+            board.getData()[attemptedMove[1]][attemptedMove[0]] = this;
+            x = (attemptedMove[0]);
+            y = (attemptedMove[1]);
+
+            for (ChessPiece cp : board.getAllPieces()) {
+                if (cp != this && cp.getColor() != this.color) {
+                    for (int[] move : cp.getAvailableMoves(true)) {
+                        if (move[0] == king.getX() && move[1] == king.getY()) {
+                            invalidMoves.add(attemptedMove);
+                            break;
+                        }
+                    }
+                }
+            }
+            board.getData()[attemptedMove[1]][attemptedMove[0]] = taken;
+            x = sx;
+            y = sy;
+            board.getData()[y][x] = this;
+        }
+        outputList.removeAll(invalidMoves);
         return outputList;
     }
 
     //king and knight
-    protected ArrayList<int[]> getMovesForDefinedMovements(int[][] directions) {
+    protected ArrayList<int[]> getMovesForDefinedMovements(int[][] directions, boolean isInternalCall) {
         ArrayList<int[]> outputList = new ArrayList<>();
         for (int[] position: directions) {
             int dx = x + position[0];
@@ -98,7 +133,8 @@ public class ChessPiece {
                 }
             }
         }
-        return outputList;
+        if (isInternalCall) return outputList;
+        return removeMovesFromCheck(outputList);
     }
 
 

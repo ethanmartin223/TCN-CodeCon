@@ -1,9 +1,8 @@
 package ChessBoardComponents.ChessPeices;
 import ChessBoardComponents.ChessBoardData;
 import ChessBoardComponents.ChessPieceImage;
-import java.awt.*;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Knight extends ChessPiece{
 
@@ -16,9 +15,13 @@ public class Knight extends ChessPiece{
         else if (this.color == ChessPiece.WHITE) renderImage = ChessPieceImage.WHITE_KNIGHT;
     }
 
-    @Override
     public ArrayList<int[]> getAvailableMoves() {
-        return getMovesForDefinedMovements(directions);
+        return getAvailableMoves(false);
+    }
+
+    @Override
+    public ArrayList<int[]> getAvailableMoves(boolean b) {
+        return getMovesForDefinedMovements(directions, b);
     }
 
 

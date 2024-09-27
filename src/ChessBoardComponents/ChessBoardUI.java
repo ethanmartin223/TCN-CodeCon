@@ -1,6 +1,5 @@
 package ChessBoardComponents;
 
-import ChessBoardComponents.BoardTile;
 import ChessBoardComponents.ChessPeices.ChessPiece;
 
 import javax.swing.*;
@@ -25,7 +24,7 @@ public class ChessBoardUI extends JPanel implements KeyListener {
     private Timer aiMoveTimer;
     private boolean renderZeroZeroDown;
 
-    public ChessBoardUI(JFrame parent, int width, int height) {
+    public ChessBoardUI(JFrame parent, int width, int height) throws InterruptedException {
         setLayout(new GridLayout(height, width));
 
         this.width = width;
@@ -42,9 +41,10 @@ public class ChessBoardUI extends JPanel implements KeyListener {
         renderZeroZeroDown = true;
         grabFocus();
 
-        aiMoveTimer = new Timer(500, e -> doAiMoves());
+
+        aiMoveTimer = new Timer(10, e -> doAiMoves());
         aiMoveTimer.setRepeats(true);
-        aiMoveTimer.start();
+        new Timer(1000, e->aiMoveTimer.start()).start();
     }
 
     public void startNewGame() {

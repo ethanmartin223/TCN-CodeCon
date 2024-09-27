@@ -3,9 +3,10 @@ package ChessAi;
 import ChessBoardComponents.ChessBoardData;
 import ChessBoardComponents.ChessPeices.ChessPiece;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.List;
 
 public class ChessBot {
 
@@ -21,7 +22,9 @@ public class ChessBot {
     public void makeBestMove() {
         HashMap<ChessPiece, ArrayList<int[]>> moves = boardData.getAllMovesForColor(this.playingColor);
         ChessPiece cp;
-        int[] debugMove = (cp=moves.keySet().stream().findFirst().get()).getAvailableMoves().getFirst();
+        List<ChessPiece> cps = moves.keySet().stream().toList();
+        ArrayList<int[]> j = (cp=cps.get((int) (Math.random()*cps.size()))).getAvailableMoves();
+        int[] debugMove = j.get((int) (Math.random()*j.size()));
         boardData.tryToMove(cp, debugMove[0], debugMove[1]);
     }
 

@@ -14,9 +14,14 @@ public class Queen extends ChessPiece{
         if (this.color == ChessPiece.BLACK) renderImage = ChessPieceImage.BLACK_QUEEN;
         else if (this.color == ChessPiece.WHITE) renderImage = ChessPieceImage.WHITE_QUEEN;
     }
-    @Override
+
     public ArrayList<int[]> getAvailableMoves() {
-        return getMovesForLongDistanceMovements(directions);
+        return getAvailableMoves(false);
+    }
+
+    @Override
+    public ArrayList<int[]> getAvailableMoves(boolean b) {
+        return getMovesForLongDistanceMovements(directions, b);
     }
 
 

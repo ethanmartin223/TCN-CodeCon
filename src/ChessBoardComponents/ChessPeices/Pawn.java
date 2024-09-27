@@ -3,13 +3,14 @@ package ChessBoardComponents.ChessPeices;
 import ChessBoardComponents.ChessBoardData;
 import ChessBoardComponents.ChessPieceImage;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Pawn extends ChessPiece{
 
+
+    public ArrayList<int[]> getAvailableMoves() {
+        return getAvailableMoves(false);
+    }
 
     public Pawn(ChessBoardData parentBoard, int posX, int poxY, int color) {
         super(parentBoard, posX, poxY, color);
@@ -18,7 +19,7 @@ public class Pawn extends ChessPiece{
     }
 
     @Override
-    public ArrayList<int[]> getAvailableMoves() {
+    public ArrayList<int[]> getAvailableMoves(boolean isInternalCall) {
         ArrayList<int[]> outputList = new ArrayList<>();
         int directionModifier = this.color == ChessPiece.WHITE ? -1 : 1; //this could cause issues if there is ever a color other then black/white
         if (x < board.getWidth() && x > -1 && y + directionModifier < board.getHeight() && y + directionModifier > -1)
@@ -33,7 +34,9 @@ public class Pawn extends ChessPiece{
         if (x-1 < board.getWidth() && x-1 > -1 && y + directionModifier < board.getHeight() && y + directionModifier > -1)
             if (board.getPieceAt(x-1,y + directionModifier)!=null && board.getPieceAt(x-1,y + directionModifier).getColor()!=this.color)
                 outputList.add(new int[]{x-1,y + directionModifier});
-        return outputList;
+
+        if (isInternalCall) return outputList;
+        return removeMovesFromCheck(outputList);
     }
 
     @Override

@@ -15,9 +15,14 @@ public class Bishop extends ChessPiece{
         else if (this.color == ChessPiece.WHITE) renderImage = ChessPieceImage.WHITE_BISHOP;
     }
 
-    @Override
     public ArrayList<int[]> getAvailableMoves() {
-        return getMovesForLongDistanceMovements(directions);
+        return getAvailableMoves(false);
+    }
+
+
+    @Override
+    public ArrayList<int[]> getAvailableMoves(boolean b) {
+        return getMovesForLongDistanceMovements(directions, b);
     }
 
     @Override
