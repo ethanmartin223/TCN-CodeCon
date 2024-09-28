@@ -50,6 +50,10 @@ public class ChessBoardData {
         if (cp!=null && cp.canMoveTo(toX,toY)) {
             internalMovePiece(cp, toX, toY);
             this.currentPlayerTurn = currentPlayerTurn==ChessPiece.WHITE?ChessPiece.BLACK:ChessPiece.WHITE;
+            for (ChessPiece p : allPieces) {
+                p.wasLastMovedPiece = false;
+            }
+            cp.wasLastMovedPiece = true;
             return true;
         } else return false;
     }
@@ -72,6 +76,12 @@ public class ChessBoardData {
                 internalMovePiece(getPieceAt(0, toY), 3, toY);
             else if (toX == 6)
                 internalMovePiece(getPieceAt(7, toY), 5, toY);
+        }
+
+        //check if pawn is attempting en passant
+        if (cp.getClass()== Pawn.class && toX!=cp.getX() && getPieceAt(toX, toY)==null) {
+            removePiece(getPieceAt(toX,cp.getY()));
+            boardData[cp.getY()][toX] = null;
         }
 
         boardData[cp.getY()][cp.getX()] = null;

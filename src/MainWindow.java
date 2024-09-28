@@ -15,11 +15,11 @@ public class MainWindow extends JFrame {
         chessBoard.setFocusable(true);
         add(chessBoard);
 
-//        ChessAi.ChessBot whiteAi = new ChessAi.ChessBot(chessBoard.getBoardData(), ChessPiece.WHITE);
-//        chessBoard.getBoardData().setAiForColor(whiteAi, ChessPiece.WHITE);
-//
-//        ChessAi.ChessBot blackAi = new ChessAi.ChessBot(chessBoard.getBoardData(), ChessPiece.BLACK);
-//        chessBoard.getBoardData().setAiForColor(blackAi, ChessPiece.BLACK);
+        ChessAi.ChessBot whiteAi = new ChessAi.ChessBot(chessBoard.getBoardData(), ChessPiece.WHITE);
+        chessBoard.getBoardData().setAiForColor(whiteAi, ChessPiece.WHITE);
+
+        ChessAi.ChessBot blackAi = new ChessAi.ChessBot(chessBoard.getBoardData(), ChessPiece.BLACK);
+        chessBoard.getBoardData().setAiForColor(blackAi, ChessPiece.BLACK);
 
         chessBoard.startNewGame();
 

@@ -51,6 +51,18 @@ public class Pawn extends ChessPiece{
             if (board.getPieceAt(x-1,y + directionModifier)!=null && board.getPieceAt(x-1,y + directionModifier).getColor()!=this.color)
                 outputList.add(new int[]{x-1,y + directionModifier});
 
+        //en passant
+        if (x+1 < board.getWidth() && x+1 > -1 && y + directionModifier < board.getHeight() && y + directionModifier > -1)
+            if (board.getPieceAt(x+1,y)!=null && board.getPieceAt(x+1,y).getColor()!=this.color &&
+                    board.getPieceAt(x+1,y).getClass()== Pawn.class && board.getPieceAt(x+1,y).wasLastMovedPiece &&
+                    (directionModifier==-1?y==3:y==4))
+                outputList.add(new int[]{x+1,y + directionModifier});
+        if (x-1 < board.getWidth() && x-1 > -1 && y + directionModifier < board.getHeight() && y + directionModifier > -1)
+            if (board.getPieceAt(x-1,y)!=null && board.getPieceAt(x-1,y).getColor()!=this.color &&
+                    board.getPieceAt(x-1,y).getClass()== Pawn.class && board.getPieceAt(x-1,y).wasLastMovedPiece &&
+                    (directionModifier==-1?y==3:y==4))
+                outputList.add(new int[]{x-1,y + directionModifier});
+
         if (isInternalCall) return outputList;
         return removeMovesFromCheck(outputList);
     }

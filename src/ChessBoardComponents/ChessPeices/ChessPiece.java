@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class ChessPiece {
 
     public boolean hasMovedBefore;
+    public boolean wasLastMovedPiece;
 
     ChessBoardData board;
     int x, y;

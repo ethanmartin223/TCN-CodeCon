@@ -44,14 +44,14 @@ public class King extends ChessPiece{
     private void addMovesForCastle(ArrayList<int[]> output, int yCoord) {
         ChessPiece rook1 = board.getPieceAt(0, yCoord);
         ChessPiece rook2 = board.getPieceAt(7, yCoord);
-        if (rook1.getClass() == Rook.class && !rook1.hasMovedBefore
+        if (rook1 != null && rook1.getClass() == Rook.class && !rook1.hasMovedBefore
                 && board.getPieceAt(1, yCoord) == null
                 && board.getPieceAt(2, yCoord) == null
                 && board.getPieceAt(3, yCoord) == null) {
             if (isValidCastle(new int[][]{{2, yCoord}, {3, yCoord}}))
                 output.add(new int[]{2, yCoord});
         }
-        if (rook2.getClass() == Rook.class && !rook2.hasMovedBefore
+        if (rook2 != null && rook2.getClass() == Rook.class && !rook2.hasMovedBefore
                 && board.getPieceAt(5, yCoord) == null
                 && board.getPieceAt(6, yCoord) == null) {
             if (isValidCastle(new int[][]{{5, yCoord}, {6,yCoord}}))
