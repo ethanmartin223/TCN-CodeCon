@@ -105,7 +105,8 @@ public class ChessPiece {
             for (ChessPiece cp : board.getAllPieces()) {
                 if (cp != this && cp.getColor() != this.color) {
                     for (int[] move : cp.getAvailableMoves(true)) {
-                        if (move[0] == king.getX() && move[1] == king.getY()) {
+                        if (move[0] == king.getX() && move[1] == king.getY() &&
+                                !(cp.getX()==attemptedMove[0] && cp.getY()== attemptedMove[1])) {
                             invalidMoves.add(attemptedMove);
                             break;
                         }
