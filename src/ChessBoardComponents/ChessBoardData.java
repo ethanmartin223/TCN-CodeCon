@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 public class ChessBoardData {
 
+
     ChessPiece[][] boardData;
     int width, height;
     int currentPlayerTurn; //Form in ChessPiece.WHITE || ChessPiece.BLACK
@@ -18,8 +19,27 @@ public class ChessBoardData {
         this.width = width;
         this.currentPlayerTurn = ChessPiece.WHITE;
         this.height = height;
-        boardData = new ChessPiece[height][width];
         allPieces = new ArrayList<>();
+        boardData = new ChessPiece[height][width];
+    }
+
+    boolean isGameOver() {
+        boolean onlyKings = true;
+        boolean whiteCanMove= false;
+        boolean blackCanMove= false;
+        for (ChessPiece cp: getAllPieces()) {
+            if (cp.getClass() != King.class) onlyKings = false;
+            if (cp.getColor()==ChessPiece.WHITE) {
+                if (!cp.getAvailableMoves().isEmpty())
+                    whiteCanMove = true;
+            }
+            if (cp.getColor()==ChessPiece.BLACK) {
+                if (!cp.getAvailableMoves().isEmpty())
+                    blackCanMove = true;
+            }
+        }
+        return !(blackCanMove && whiteCanMove) || (onlyKings);
+
     }
 
     public ChessPiece getPieceAt(int x, int y) {
@@ -46,18 +66,26 @@ public class ChessBoardData {
     }
 
     private void internalMovePiece(ChessPiece cp, int toX, int toY) {
+        //check if king is castling
+        if (cp.getClass()== King.class && Math.abs(cp.getX()-toX)>1) {
+            if (toX == 2)
+                internalMovePiece(getPieceAt(0, toY), 3, toY);
+            else if (toX == 6)
+                internalMovePiece(getPieceAt(7, toY), 5, toY);
+        }
+
         boardData[cp.getY()][cp.getX()] = null;
         if (boardData[toY][toX]!=null) removePiece(boardData[toY][toX]);
         boardData[toY][toX] = cp;
         cp.setX(toX);
         cp.setY(toY);
         cp.hasMovedBefore = true;
+
+        //promote on pawn reaching other side
         if (cp.getClass()==Pawn.class && cp.getY()==0 || cp.getY()==7) {
             try {
                 ((Pawn) cp).promote('Q'); //debug always promote to queen
-            } catch (ClassCastException e) {
-                System.out.println("CLASS CAST EXCEPTION AGAIN");
-            }
+            } catch (ClassCastException ignored) {};
         }
     }
 
@@ -66,6 +94,7 @@ public class ChessBoardData {
     }
 
     public void initializeNewGame() {
+        allPieces.clear();
         boardData = new ChessPiece[height][width];
 
         for (int x = 0; x < width; x++) boardData[6][x] = new Pawn(this, x, 6, ChessPiece.WHITE);

@@ -118,6 +118,10 @@ public class ChessBoardUI extends JPanel implements KeyListener {
             flipBoard();
             redrawBoard();
         }
+        if (e.getKeyChar() == 'r') {
+            chessBoardData.initializeNewGame();
+            redrawBoard();
+        }
     }
 
     @Override
@@ -131,11 +135,16 @@ public class ChessBoardUI extends JPanel implements KeyListener {
 
     public void doAiMoves() {
         if (chessBoardData.whiteBot != null && chessBoardData.currentPlayerTurn == ChessPiece.WHITE) {
-            chessBoardData.whiteBot.makeBestMove();
-            redrawBoard();
+            if (!chessBoardData.isGameOver()) {
+                chessBoardData.whiteBot.makeBestMove();
+                redrawBoard();
+            }
         } else if (chessBoardData.blackBot != null && chessBoardData.currentPlayerTurn == ChessPiece.BLACK) {
-            chessBoardData.blackBot.makeBestMove();
-            redrawBoard();
+            if (!chessBoardData.isGameOver()) {
+                chessBoardData.blackBot.makeBestMove();
+                redrawBoard();
+            }
         }
     }
+
 }
