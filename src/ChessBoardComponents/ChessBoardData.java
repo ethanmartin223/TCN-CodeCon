@@ -38,6 +38,16 @@ public class ChessBoardData {
                     blackCanMove = true;
             }
         }
+        if (!(blackCanMove && whiteCanMove) || (onlyKings)) {
+            if (onlyKings)
+                System.out.println("DEBUG: Stalemate");
+            else if (blackCanMove && ((King)getKing(ChessPiece.WHITE)).isInCheck())
+                System.out.println("DEBUG: Black Wins");
+            else if (whiteCanMove && ((King)getKing(ChessPiece.BLACK)).isInCheck())
+                System.out.println("DEBUG: White Wins");
+            else System.out.println("DEBUG: Stalemate");
+
+        }
         return !(blackCanMove && whiteCanMove) || (onlyKings);
 
     }
@@ -168,7 +178,11 @@ public class ChessBoardData {
     }
 
     public void debugShowBoard() {
+        System.out.print("  ");
+        for (int i = 0; i < boardData.length; i++) System.out.print(i+"  ");
+        System.out.println();
         for (int y = 0; y < boardData.length; y++) {
+            System.out.print(y+" ");
             for (int x = 0; x < boardData[0].length; x++) {
                 System.out.print(boardData[y][x]!=null?boardData[y][x]+" ":"   ");
             }

@@ -17,6 +17,7 @@ public class ChessBoardUI extends JPanel implements KeyListener {
 
 
     private JFrame parentWindow;
+
     private int width, height;
     private ChessBoardData chessBoardData;
     private BoardTile[][] boardTiles;
@@ -24,7 +25,7 @@ public class ChessBoardUI extends JPanel implements KeyListener {
     private Timer aiMoveTimer;
     private boolean renderZeroZeroDown;
 
-    public ChessBoardUI(JFrame parent, int width, int height) throws InterruptedException {
+    public ChessBoardUI(JFrame parent, int width, int height) {
         setLayout(new GridLayout(height, width));
 
         this.width = width;
@@ -45,6 +46,10 @@ public class ChessBoardUI extends JPanel implements KeyListener {
         aiMoveTimer = new Timer(10, e -> doAiMoves());
         aiMoveTimer.setRepeats(true);
         new Timer(1000, e->aiMoveTimer.start()).start();
+    }
+
+    public void addToBoardNotationArea(String addition) {
+        
     }
 
     public void startNewGame() {
@@ -138,11 +143,15 @@ public class ChessBoardUI extends JPanel implements KeyListener {
             if (!chessBoardData.isGameOver()) {
                 chessBoardData.whiteBot.makeBestMove();
                 redrawBoard();
+            }else {
+                chessBoardData.initializeNewGame();
             }
         } else if (chessBoardData.blackBot != null && chessBoardData.currentPlayerTurn == ChessPiece.BLACK) {
             if (!chessBoardData.isGameOver()) {
                 chessBoardData.blackBot.makeBestMove();
                 redrawBoard();
+            } else {
+                chessBoardData.initializeNewGame();
             }
         }
     }

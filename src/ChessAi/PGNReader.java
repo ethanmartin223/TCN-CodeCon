@@ -36,7 +36,6 @@ public class PGNReader {
         PGNReader reader = new PGNReader();
         reader.open("test_data.pgn");
         reader.getNextGame();
-
     }
 
     public BoardState readNext() {
@@ -48,6 +47,7 @@ public class PGNReader {
         pgnDecompiler = Pattern.compile("\\d*?\\. ?(.*?) (.*?) ");
         moveDecompiler = Pattern.compile(
                 "(?=[^\\s])(?<p>[KBNRQ])?(?<i>[0-8]|[a-h])?(?<t>x)?(?<x>[a-h])(?<y>[0-8])(?<f>\\+)?(?<u>=[KBNRQ])?(?<m>#)?(?=\\s|$)|(?<c>O-O-O|O-O)");
+
     }
 
     public void open(String filename) {
@@ -86,6 +86,7 @@ public class PGNReader {
                 moves.add(matcher.group(j));
             }
         }
+        moves.remove("");
         output.numberOfMoves = numberOfMoves;
         output.game = new BoardState[numberOfMoves+1];
         output.game[0] = new BoardState();
@@ -94,7 +95,7 @@ public class PGNReader {
         ChessBoardData sim = new ChessBoardData(8,8);
         sim.initializeNewGame();
 
-        String piece, takenModifier, check, checkmate, promotion, castle, x, y, extraIdentifier;
+        String piece, takenModifier, check, checkmate, promotion, castle, extraIdentifier;
         for (int i=0; i<moves.size(); i+=1) {
             BoardState currentBoardState = (output.game[i]= new BoardState());
             currentBoardState.boardState = deepCopy(output.game[i].boardState);
@@ -103,8 +104,8 @@ public class PGNReader {
 
             piece = tryToMatch(matcher, "p");
             if (piece == null) piece = "P";
-            x = tryToMatch(matcher, "x");
-            y = tryToMatch(matcher, "y");
+            int x = (fileToCoord(tryToMatch(matcher, "x").charAt(0)));
+            int y = 7-(Integer.parseInt(tryToMatch(matcher, "y"))-1);
             extraIdentifier = tryToMatch(matcher, "i");
             takenModifier = tryToMatch(matcher, "t");
             check =tryToMatch(matcher, "f");
@@ -112,7 +113,7 @@ public class PGNReader {
             promotion = tryToMatch(matcher, "u");
             castle = tryToMatch(matcher, "c");
 
-            System.out.println("\nPiece: " + piece + " x: " + x + " y: " + y +
+            System.out.println("\nPiece: " + piece + " move="+tryToMatch(matcher, "x")+""+tryToMatch(matcher, "y")+" x=" +x+" y="+y+
                     " TakenModifier: " + takenModifier +
                     " Extra Identifier: "+extraIdentifier +
                     " Check: " + check +
@@ -127,7 +128,8 @@ public class PGNReader {
             for (ChessPiece cp : possiblePieces.keySet()) {
                 if (cp.toString().charAt(1)==(piece.charAt(0))){
                     for (int[] move: cp.getAvailableMoves()) {
-                        if (move[1] == Integer.parseInt(y) && move[0]==fileToCoord(x.charAt(0))) {
+                        if (move[1] == y && move[0]==x) {
+                            System.out.println("\t"+x+" "+y);
                             if (extraIdentifier != null) {
                                 if ((extraIdentifier.matches("[a-z]") && cp.getX()==fileToCoord(extraIdentifier.charAt(0)))
                                         || (extraIdentifier.matches("[0-8]") && cp.getY()==Integer.parseInt(extraIdentifier)))
@@ -139,9 +141,13 @@ public class PGNReader {
                 }
                 if (answer != null) break;
             }
-            System.out.println("Found chess Piece: "+answer);
+            System.out.println("Found Piece: "+answer);
+            if (answer!=null) {
+                System.out.println("Piece Location: " + answer.getX()+" "+answer.getY());
+            }
+            assert answer!=null;
             System.out.println("Move: "+moves.get(i));
-            System.out.println("Succeeded Moving Piece: "+sim.tryToMove(answer, fileToCoord(x.charAt(0)), Integer.parseInt(y)));
+            System.out.println("Succeeded Moving Piece: "+sim.tryToMove(answer, x, y));
 
             sim.debugShowBoard();
         }
